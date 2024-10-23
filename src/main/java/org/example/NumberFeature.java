@@ -10,6 +10,8 @@ public class NumberFeature {
         inputNumber = in.nextInt();
         // 你的代码逻辑
 
+        result = inputNumber;
+
         System.out.println(result);
     }
 }
