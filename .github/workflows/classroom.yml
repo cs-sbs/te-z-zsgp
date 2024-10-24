@@ -1,0 +1,85 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: TC01
+      id: tc01
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: TC01
+        setup-command: ''
+        command: bash ./calculate.sh
+        input: '092234'
+        expected-output: '24'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: TC02
+      id: tc02
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: TC02
+        setup-command: ''
+        command: bash ./calculate.sh
+        input: '342315'
+        expected-output: '13'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: TC03
+      id: tc03
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: TC03
+        setup-command: ''
+        command: bash ./calculate.sh
+        input: '9234'
+        expected-output: '0'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: TC04
+      id: tc04
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: TC04
+        setup-command: ''
+        command: bash ./calculate.sh
+        input: '100000'
+        expected-output: '10'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: TC05
+      id: tc05
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: TC05
+        setup-command: ''
+        command: bash ./calculate.sh
+        input: '314159'
+        expected-output: '29'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TC01_RESULTS: "${{steps.tc01.outputs.result}}"
+        TC02_RESULTS: "${{steps.tc02.outputs.result}}"
+        TC03_RESULTS: "${{steps.tc03.outputs.result}}"
+        TC04_RESULTS: "${{steps.tc04.outputs.result}}"
+        TC05_RESULTS: "${{steps.tc05.outputs.result}}"
+      with:
+        runners: tc01,tc02,tc03,tc04,tc05
